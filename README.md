@@ -1,2 +1,0 @@
-# damonhogan
-personal project
