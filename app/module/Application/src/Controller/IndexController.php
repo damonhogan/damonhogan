@@ -76,6 +76,42 @@ class IndexController extends AbstractActionController
 
         //TODO: business merchant. EIN....
 
+        $data = ["SourceEmail" => "damonhogan@juno.com",
+            "BusinessLegalName" => "D ProPay Partner",
+            "DoingBusinessAs" => "FPPA",
+            "DayPhone" => "8601233421",
+            "Tier" => "Business",
+            "EIN" => "723456",
+            "CurrencyCode" => "USD",
+            "BankAccount" => [
+                "AccountCountryCode" => "USA",
+                "AccountOwnershipType" => "Personal",
+                "AccountType" => "C",
+                "BankAccountNumber" => "023456789",
+                "BankName" => "Wells Fargo",
+                "RoutingNumber" => "102000076"
+            ],
+            "BusinessAddress" => [
+                "Address1" => "101 Main Street",
+                "Address2" => "Ste. 200",
+                "City" => "Rocky Hill",
+                "State" => "CT",
+                "Country" => "USA",
+                "Zip" => "06067"]
+        ];
+
+
+        /**
+         * Business signup example
+         * The cert string and setTermId would normally be in a config or in your database
+         *  This call normally yields return json data for the account created like so
+         */
+        $result = $proPayAPI->setCertStr('TiAuNrNwEjRnScCaE9RcTcS7ReI9NG')
+            ->setTermId('ReI9NG')
+            ->setSignupData($data)
+            ->processSignup()
+            ->getSignupInfo();
+
 
         return new ViewModel(['result' => $result]);
 
