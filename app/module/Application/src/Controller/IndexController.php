@@ -19,8 +19,9 @@ class IndexController extends AbstractActionController
     {
 
         // regular merchant
+        /*
         $data = [
-            "SourceEmail" => "damonhogan2@icloud.com",
+            "SourceEmail" => "damonhogan@juno.com",
             "FirstName" => "John",
             "MiddleInitial" => "Q",
             "LastName" => "Test",
@@ -30,7 +31,7 @@ class IndexController extends AbstractActionController
             "DayPhone" => "8601233421",
             "EveningPhone" => "8601233421",
             "SocialSecurityNumber" => "111111111",
-            "ExternalId" => "2212157",
+            "ExternalId" => "3212157",
             "Tier" => "", // "Merchant"
             "PhonePIN" => "1234",
             "Address" => [
@@ -60,22 +61,26 @@ class IndexController extends AbstractActionController
             ]
         ];
 
-        $proPayAPI = new ProPayApi();
+        */
 
         /**
          * The cert string and setTermId would normally be in a config or in your database
          *  This call normally yields return json data for the account created like so
          * {"AccountNumber":32299999,"Password":"$#GD!ADXv2","SourceEmail":"someuser@somedomain.com","Status":"00","Tier":"Platinum"}
          */
+
+        /*
+        $proPayAPI = new ProPayApi();
         $result = $proPayAPI->setCertStr('TiAuNrNwEjRnScCaE9RcTcS7ReI9NG')
             ->setTermId('ReI9NG')
             ->setSignupData($data)
             ->processSignup()
             ->getSignupInfo();
-
+        */
 
         //TODO: business merchant. EIN....
 
+        /*
         $data = ["SourceEmail" => "damonhogan@juno.com",
             "BusinessLegalName" => "D ProPay Partner",
             "DoingBusinessAs" => "FPPA",
@@ -100,17 +105,36 @@ class IndexController extends AbstractActionController
                 "Zip" => "06067"]
         ];
 
+        */
+
 
         /**
          * Business signup example
          * The cert string and setTermId would normally be in a config or in your database
          *  This call normally yields return json data for the account created like so
          */
+
+        /*
+        $proPayAPI = new ProPayApi();
         $result = $proPayAPI->setCertStr('TiAuNrNwEjRnScCaE9RcTcS7ReI9NG')
             ->setTermId('ReI9NG')
             ->setSignupData($data)
             ->processSignup()
             ->getSignupInfo();
+        */
+
+        $data = [
+            "amount" => 100,
+            "invNum" => "",
+            "recAccntNum" => "32291226"
+        ];
+
+        $proPayAPI = new ProPayApi();
+        $result = $proPayAPI->setCertStr('TiAuNrNwEjRnScCaE9RcTcS7ReI9NG')
+            ->setTermId('ReI9NG')
+            ->setPropayToPropayTransferData($data)
+            ->processProPayToProPay()
+            ->getProPayToPropayTransferInfo();
 
 
         return new ViewModel(['result' => $result]);
@@ -118,6 +142,7 @@ class IndexController extends AbstractActionController
 
         //current response
         //'{"AccountNumber":32291150,"Password":"!#GD$ADXv2","SourceEmail":"damonhogan2@icloud.com","Status":"00","Tier":"Platinum"}'
+        //{"AccountNumber":32291226,"Password":"LMv%QPL!n8","SourceEmail":"damonhogan@juno.com","Status":"00","Tier":"Platinum"}'
     }
 
 }
