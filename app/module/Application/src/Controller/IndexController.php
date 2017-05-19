@@ -145,7 +145,9 @@ class IndexController extends AbstractActionController
 
         /* protectPay Api hosted transactions */
 
-        $data = [
+        /*
+
+         $data = [
             "PayerAccountId" => 2498355927655035,
             "MerchantProfileId" => null,
             "Amount" => 100,
@@ -182,7 +184,14 @@ class IndexController extends AbstractActionController
             ->setHostedTransactionData($data)
             ->createHostedTransaction()
             ->getCreatedHostedTransactionInfo();
+        */
 
+        $protectPayAPI = new ProtectPayApi();
+        $result = $protectPayAPI->setCertStr('TiAuNrNwEjRnScCaE9RcTcS7ReI9NG')
+            ->setTermId('ReI9NG')
+            ->setGetHostedTransactionData("3c2d361a-23a7-4ca1-9c4d-4c18e1af7ad1")
+            ->getHostedTransaction()
+            ->getHostedTransactionInfo();
 
         return new ViewModel(['result' => $result]);
 
