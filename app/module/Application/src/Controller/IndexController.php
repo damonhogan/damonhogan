@@ -10,6 +10,7 @@ namespace Application\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 use Application\Object\ProPayApi;
+use Application\Object\ProtectPayApi;
 
 class IndexController extends AbstractActionController
 {
@@ -123,6 +124,7 @@ class IndexController extends AbstractActionController
             ->getSignupInfo();
         */
 
+        /*
         $data = [
             "amount" => 100,
             "invNum" => "",
@@ -136,13 +138,55 @@ class IndexController extends AbstractActionController
             ->processProPayToProPay()
             ->getProPayToPropayTransferInfo();
 
+        */
+        //current response
+        //'{"AccountNumber":32291150,"Password":"!#GD$ADXv2","SourceEmail":"damonhogan2@icloud.com","Status":"00","Tier":"Platinum"}'
+        //{"AccountNumber":32291226,"Password":"LMv%QPL!n8","SourceEmail":"damonhogan@juno.com","Status":"00","Tier":"Platinum"}'
+
+        /* protectPay Api hosted transactions */
+
+        $data = [
+            "PayerAccountId" => 2498355927655035,
+            "MerchantProfileId" => null,
+            "Amount" => 100,
+            "CurrencyCode" => "USD",
+            "InvoiceNumber" => "Test Invoice",
+            "Comment1" => "Test Comment 1",
+            "Comment2" => "Test comment 2",
+            "CardHolderNameRequirementType" => 1,
+            "SecurityCodeRequirementType" => 1,
+            "AvsRequirementType" => 1,
+            "AuthOnly" => true,
+            "ProcessCard" => true,
+            "StoreCard" => true,
+            "OnlyStoreCardOnSuccessfulProcess" => true,
+            "CssUrl" => "https://protectpaytest.propay.com/hpp/css/pmi.css",
+            "Address1" => "123 ABC St",
+            "Address2" => "Apt A",
+            "City" => "Faloola",
+            "Country" => "USA",
+            "Description" => "My Visa",
+            "Name" => "John Smith",
+            "State" => "UT",
+            "ZipCode" => "12345",
+            "BillerIdentityId" => null,
+            "CreationDate" => null,
+            "HostedTransactionIdentifier" => null,
+            "PaymentTypeId" => "0",
+            "Protected" => false
+        ];
+
+        $protectPayAPI = new ProtectPayApi();
+        $result = $protectPayAPI->setCertStr('TiAuNrNwEjRnScCaE9RcTcS7ReI9NG')
+            ->setTermId('ReI9NG')
+            ->setHostedTransactionData($data)
+            ->createHostedTransaction()
+            ->getCreatedHostedTransactionInfo();
+
 
         return new ViewModel(['result' => $result]);
 
 
-        //current response
-        //'{"AccountNumber":32291150,"Password":"!#GD$ADXv2","SourceEmail":"damonhogan2@icloud.com","Status":"00","Tier":"Platinum"}'
-        //{"AccountNumber":32291226,"Password":"LMv%QPL!n8","SourceEmail":"damonhogan@juno.com","Status":"00","Tier":"Platinum"}'
     }
 
 }
