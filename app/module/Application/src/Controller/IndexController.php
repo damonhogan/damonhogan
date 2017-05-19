@@ -67,7 +67,7 @@ class IndexController extends AbstractActionController
         /**
          * The cert string and setTermId would normally be in a config or in your database
          *  This call normally yields return json data for the account created like so
-         * {"AccountNumber":32299999,"Password":"$#GD!ADXv2","SourceEmail":"someuser@somedomain.com","Status":"00","Tier":"Platinum"}
+         * {"AccountNumber" => 32299999,"Password":"$#GD!ADXv2","SourceEmail" => "someuser@somedomain.com","Status":"00","Tier":"Platinum"}
          */
 
         /*
@@ -186,12 +186,30 @@ class IndexController extends AbstractActionController
             ->getCreatedHostedTransactionInfo();
         */
 
-        $protectPayAPI = new ProtectPayApi();
+        /*$protectPayAPI = new ProtectPayApi();
         $result = $protectPayAPI->setCertStr('TiAuNrNwEjRnScCaE9RcTcS7ReI9NG')
             ->setTermId('ReI9NG')
             ->setGetHostedTransactionData("3c2d361a-23a7-4ca1-9c4d-4c18e1af7ad1")
             ->getHostedTransaction()
             ->getHostedTransactionInfo();
+        */
+
+        $data = [
+            "accountNum" => 123456,
+            "recAccntNum" => 987654,
+            "amount" => 100,
+            "transNum" => 2,
+            "invNum" => "Invoice",
+            "comment1" => "Test Comments",
+            "comment2" => "Test Comments2"
+        ];
+
+        $proPayAPI = new ProPayApi();
+        $result = $proPayAPI->setCertStr('TiAuNrNwEjRnScCaE9RcTcS7ReI9NG')
+            ->setTermId('ReI9NG')
+            ->setTimedPullData($data)
+            ->processTimedPull()
+            ->getTimedPullInfo();
 
         return new ViewModel(['result' => $result]);
 

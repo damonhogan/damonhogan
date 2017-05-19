@@ -132,7 +132,7 @@ class ProtectPayApi {
      */
     public function getHostedTransaction() {
         $ch = curl_init('https://xmltestapi.propay.com/protectpay/HostedTransactionResults/' . $this->_getHostedTransactionData);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_USERPWD, $this->_getAuth());
         $this->_getHostedTransactionInfo = curl_exec($ch);

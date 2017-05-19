@@ -15,6 +15,10 @@ class ProPayApi {
     private $_propayToPropayTransferData;
     private $_propayToPropayTransferInfo;
 
+    /** for timed pull */
+    private $_timedPullData;
+    private $_timedPullInfo;
+
     /**
      * @param string $certStr
      * @return $this
@@ -48,6 +52,15 @@ class ProPayApi {
      */
     public function setTermId($termId) {
         $this->_termId = $termId;
+        return $this;
+    }
+
+    /**
+     * @param array $timedPullData
+     * @return $this
+     */
+    public function setTimedPullData($timedPullData) {
+        $this->_timedPullData = $timedPullData;
         return $this;
     }
 
@@ -100,6 +113,27 @@ class ProPayApi {
     }
 
     /**
+     * Processes the timed pull with the provided data
+     * @return $this
+     */
+    public function processTimedPull() {
+        $data_string = json_encode($this->_timedPullData);
+
+        $ch = curl_init('https://xmltestapi.propay.com/ProPayAPI/timedPull');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERPWD, $this->_getAuth());
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($data_string)
+        ));
+
+        $this->_timedPullInfo = curl_exec($ch);
+        return $this;
+    }
+
+    /**
      * @return mixed
      * returns a json string that looks like
      * {"AccountNumber":32291226,"Status":"00","TransactionNumber":3249572035}
@@ -116,5 +150,18 @@ class ProPayApi {
      */
     public function getSignupInfo() {
         return $this->_signupInfo;
+    }
+
+    /**
+     * gets the timed pull info after processing, looks something like...
+     * @return mixed
+     * {
+           "AccountNumber": 987654,
+           "Status": "00",
+           "TransactionNumber": 1
+       }
+     */
+    public function getTimedPullInfo() {
+        return $this->_timedPullInfo;
     }
 }
