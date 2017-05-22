@@ -16,6 +16,12 @@ class ProtectPayApi {
     private $_getHostedTransactionData;
     private $_getHostedTransactionInfo;
 
+    /* for creating payer ID */
+    private $_createPayerIdData;
+    private $_createPayerIdInfo;
+
+
+
     /**
      * @param string $certStr
      * @return $this
@@ -71,6 +77,43 @@ class ProtectPayApi {
 
         $this->_createdHostedTransactionInfo = curl_exec($ch);
         return $this;
+    }
+
+    /**
+     * Creates a payer id
+     * @return $this
+     */
+    public function createPayerId() {
+        $data_string = json_encode($this->_createPayerIdData);
+
+        $ch = curl_init('https://xmltestapi.propay.com/ProtectPay/Payers');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERPWD, $this->_getAuth());
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($data_string)
+        ));
+
+        $this->_createPayerIdInfo = curl_exec($ch);
+        return $this;
+    }
+
+    /**
+     * @param array $payerIdData
+     * @return $this\
+     */
+    public function setCreatePayerIdData($payerIdData) {
+        $this->_createPayerIdData = $payerIdData;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCreatePayerIdInfo() {
+        return $this->_createPayerIdInfo;
     }
 
     /**

@@ -186,7 +186,8 @@ class IndexController extends AbstractActionController
             ->getCreatedHostedTransactionInfo();
         */
 
-        /*$protectPayAPI = new ProtectPayApi();
+        /*
+        $protectPayAPI = new ProtectPayApi();
         $result = $protectPayAPI->setCertStr('TiAuNrNwEjRnScCaE9RcTcS7ReI9NG')
             ->setTermId('ReI9NG')
             ->setGetHostedTransactionData("3c2d361a-23a7-4ca1-9c4d-4c18e1af7ad1")
@@ -194,6 +195,7 @@ class IndexController extends AbstractActionController
             ->getHostedTransactionInfo();
         */
 
+        /*
         $data = [
             "accountNum" => 123456,
             "recAccntNum" => 987654,
@@ -211,7 +213,25 @@ class IndexController extends AbstractActionController
             ->processTimedPull()
             ->getTimedPullInfo();
 
+        */
+
+        $data = [
+            "BillerAccountId" => "32291226",
+            "Name" => "John Smith",
+            "EmailAddress" => "email@email.com",
+            "ExternalId1" => "CustomerNumber12",
+            "ExternalId2" => "234567"
+        ];
+
+        $protectPayAPI = new ProtectPayApi();
+        $result = $protectPayAPI->setCertStr('TiAuNrNwEjRnScCaE9RcTcS7ReI9NG')
+            ->setTermId('ReI9NG')
+            ->setCreatePayerIdData($data)
+            ->createPayerId()
+            ->getCreatePayerIdInfo();
+
         return new ViewModel(['result' => $result]);
+
 
 
     }
