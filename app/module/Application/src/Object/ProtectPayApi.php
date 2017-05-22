@@ -5,8 +5,8 @@ namespace Application\Object;
 class ProtectPayApi {
 
     /* credentials that would normally be set from database values or a config value */
-    private $_certStr;
-    private $_termId;
+    private $_billerId;
+    private $_authToken;
 
     /* for creating hosted transactions */
     private $_createHostedTransactionData;
@@ -23,20 +23,20 @@ class ProtectPayApi {
 
 
     /**
-     * @param string $certStr
+     * @param string $billerId
      * @return $this
      */
-    public function setCertStr($certStr) {
-        $this->_certStr = $certStr;
+    public function setBillerId($billerId) {
+        $this->_billerId = $billerId;
         return $this;
     }
 
     /**
-     * @param string $termId
+     * @param string $authToken
      * @return $this
      */
-    public function setTermId($termId) {
-        $this->_termId = $termId;
+    public function setAuthToken($authToken) {
+        $this->_authToken = $authToken;
         return $this;
     }
 
@@ -45,7 +45,7 @@ class ProtectPayApi {
      * @return string
      */
     private function _getAuth() {
-        return $this->_certStr . ':' . $this->_termId;
+        return $this->_billerId . ':' . $this->_authToken;
     }
 
     /**

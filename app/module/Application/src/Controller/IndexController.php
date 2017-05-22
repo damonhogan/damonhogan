@@ -216,7 +216,6 @@ class IndexController extends AbstractActionController
         */
 
         $data = [
-            "BillerAccountId" => "32291226",
             "Name" => "John Smith",
             "EmailAddress" => "email@email.com",
             "ExternalId1" => "CustomerNumber12",
@@ -224,11 +223,14 @@ class IndexController extends AbstractActionController
         ];
 
         $protectPayAPI = new ProtectPayApi();
-        $result = $protectPayAPI->setCertStr('TiAuNrNwEjRnScCaE9RcTcS7ReI9NG')
-            ->setTermId('ReI9NG')
+
+        $result = $protectPayAPI->setBillerId('2781086379225246')
+            ->setAuthToken('16dfe8d7-889b-4380-925f-9c2c6ea4d930')
             ->setCreatePayerIdData($data)
             ->createPayerId()
             ->getCreatePayerIdInfo();
+
+        $paymentMethodId ='06f97670-48c2-4679-93fc-d61771d410f9';
 
         return new ViewModel(['result' => $result]);
 
