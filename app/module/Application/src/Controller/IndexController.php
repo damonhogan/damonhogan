@@ -215,6 +215,8 @@ class IndexController extends AbstractActionController
 
         */
 
+        /*
+
         $data = [
             "Name" => "John Smith",
             "EmailAddress" => "email@email.com",
@@ -230,7 +232,65 @@ class IndexController extends AbstractActionController
             ->createPayerId()
             ->getCreatePayerIdInfo();
 
+        $payerExternalAccountId = '8924157370851397';
+
         $paymentMethodId ='06f97670-48c2-4679-93fc-d61771d410f9';
+
+        $merchantProfileId = '3391';
+
+        $protectPayAPI = new ProtectPayApi();
+
+        $result = $protectPayAPI->setBillerId('2781086379225246')
+            ->setAuthToken('16dfe8d7-889b-4380-925f-9c2c6ea4d930')
+            ->setCreatePayerIdData($data)
+            ->createPayerId()
+            ->getCreatePayerIdInfo();
+        */
+
+        $data = [
+            "PaymentMethodId" => "06f97670-48c2-4679-93fc-d61771d410f9",
+            "IsRecurringPayment" => false,
+
+            "CreditCardOverrides" =>
+                [
+                    "FullName" => "Test User",
+                    "ExpirationDate" => "1014",
+                    "CVV" => "999",
+                    "Billing" =>
+                        [
+                            "Address1" => "3400 N Ashton Blvd",
+                            "Address2" => "Suite 200",
+                            "Address3" => "",
+                            "City" => "Lehi",
+                            "State" => "UT",
+                            "ZipCode" => "84043",
+                            "Country" => "USA",
+                            "TelephoneNumber" => "8012223333",
+                            "Email" => "test@user.com"
+                        ]
+                ],
+            "AchOverrides" => null,
+            "PayerOverrides" =>
+                [
+                    "IpAddress" => "127.0.0.1"
+                ],
+            "MerchantProfileId" => "3351",
+            "PayerAccountId" => "8924157370851397",
+            "Amount" => 300,
+            "CurrencyCode" => "USD",
+            "Invoice" => "Test Invoice",
+            "Comment1" => "Authorize Comment 1",
+            "Comment2" => "Authorize Comment 2",
+            "IsDebtRepayment" => "true"
+        ];
+
+        $protectPayAPI = new ProtectPayApi();
+
+        $result = $protectPayAPI->setBillerId('2781086379225246')
+            ->setAuthToken('16dfe8d7-889b-4380-925f-9c2c6ea4d930')
+            ->setPaymentMethodTransactionData($data)
+            ->processPaymentMethodTransaction('8924157370851397')
+            ->getPaymentMethodTransactionInfo();
 
         return new ViewModel(['result' => $result]);
 

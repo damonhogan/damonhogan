@@ -20,6 +20,11 @@ class ProtectPayApi {
     private $_createPayerIdData;
     private $_createPayerIdInfo;
 
+    /* for processing a payment method transaction */
+    private $_paymentMethodTransactionData;
+    private $_paymentMethodTransactionInfo;
+
+
 
 
     /**
@@ -98,6 +103,43 @@ class ProtectPayApi {
 
         $this->_createPayerIdInfo = curl_exec($ch);
         return $this;
+    }
+
+    /**
+     * @return $this
+     */
+    public function processPaymentMethodTransaction($payerExternalAccountId) {
+        $data_string = json_encode($this->_paymentMethodTransactionData);
+
+        $ch = curl_init('https://xmltestapi.propay.com/protectpay/Payers/' . $payerExternalAccountId . '/PaymentMethods/AuthorizedTransactions');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERPWD, $this->_getAuth());
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($data_string)
+        ));
+
+        $this->_paymentMethodTransactionInfo = curl_exec($ch);
+        return $this;
+
+    }
+
+    /**
+     * @param array $paymentMethodTransactionData
+     * @return $this
+     */
+    public function setPaymentMethodTransactionData($paymentMethodTransactionData) {
+        $this->_paymentMethodTransactionData = $paymentMethodTransactionData;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPaymentMethodTransactionInfo() {
+        return $this->_paymentMethodTransactionInfo;
     }
 
     /**
