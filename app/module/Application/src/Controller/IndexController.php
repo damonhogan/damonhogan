@@ -316,6 +316,8 @@ class IndexController extends AbstractActionController
 
         */
 
+        /*
+
         $data = [
             "OriginalTransactionId" => "2",
             "TransactionHistoryId" => 103271487,
@@ -334,6 +336,27 @@ class IndexController extends AbstractActionController
             ->setTransactionRefundData($data)
             ->processSettledTransactionRefund()
             ->getTransactionRefundInfo();
+
+        */
+
+        /*
+        $protectPayAPI = new ProtectPayApi();
+
+        $result = $protectPayAPI->setBillerId('2781086379225246')
+            ->setAuthToken('16dfe8d7-889b-4380-925f-9c2c6ea4d930')
+            // payerId and duration in seconds for the token to last
+            ->getPayerIdTempToken('8924157370851397', 600)
+            ->getTempTokenInfo();
+
+        */
+
+        $protectPayAPI = new ProtectPayApi();
+
+        $result = $protectPayAPI->setBillerId('2781086379225246')
+            ->setAuthToken('16dfe8d7-889b-4380-925f-9c2c6ea4d930')
+            // payerName first and last separated by a space and duration in seconds for the token to last
+            ->getPayerNameTempToken('John Smith', 600)
+            ->getTempTokenInfo();
 
 
         return new ViewModel(['result' => $result]);
