@@ -296,6 +296,8 @@ class IndexController extends AbstractActionController
 
         */
 
+        /*
+
         $data = [
             "OriginalTransactionId" => "2",
             "TransactionHistoryId" => 0,
@@ -311,6 +313,28 @@ class IndexController extends AbstractActionController
             ->setPaymentMethodTransactionVoidData($data)
             ->processPaymentMethodTransactionVoid()
             ->getPaymentMethodTransactionVoidInfo();
+
+        */
+
+        $data = [
+            "OriginalTransactionId" => "2",
+            "TransactionHistoryId" => 103271487,
+            "MerchantProfileId" => 12345,
+            "Amount" => 5545,
+            "CurrencyCode" => "USD",
+            "Comment1" => "Refund Comment 1",
+            "Comment2" => "Refund Comment 2"
+        ];
+
+
+        $protectPayAPI = new ProtectPayApi();
+
+        $result = $protectPayAPI->setBillerId('2781086379225246')
+            ->setAuthToken('16dfe8d7-889b-4380-925f-9c2c6ea4d930')
+            ->setTransactionRefundData($data)
+            ->processSettledTransactionRefund()
+            ->getTransactionRefundInfo();
+
 
         return new ViewModel(['result' => $result]);
 

@@ -28,6 +28,10 @@ class ProtectPayApi {
     private $_paymentMethodTransactionVoidData;
     private $_paymentMethodTransactionVoidInfo;
 
+    /* for refunding a settled transaction */
+    private $_transactionRefundData;
+    private $_transactionRefundInfo;
+
 
 
 
@@ -184,6 +188,70 @@ class ProtectPayApi {
         return $this->_paymentMethodTransactionVoidInfo;
     }
 
+    /**
+     * @return $this
+     * result is something like ...
+     * {
+     *     "TransactionDetail":{
+     *         "AVSCode":"NotPresent",
+     *         "AuthorizationCode":null,
+     *         "CurrencyConversionRate":1.0,
+     *         "CurrencyConvertedAmount":100,
+     *         "CurrencyConvertedCurrencyCode":"USD",
+     *         "CVVResponseCode":"NotPresent",
+     *         "GrossAmt ":null,
+     *         "GrossAmtLessNetAmt ":null,
+     *         "NetAmt ":null,
+     *         "PerTransFee ":null,
+     *         "Rate ":null
+     *         "ResultCode":{
+     *             "ResultValue":"SUCCESS",
+     *             "ResultCode":"00",
+     *             "ResultMessage":""
+     *         },
+     *         "TransactionHistoryId":"39560623",
+     *         "TransactionId":"3",
+     *         "TransactionResult":"Success"
+     *     },
+     *     "RequestResult":{
+     *     "ResultValue":"SUCCESS",
+     *     "ResultCode":"00",
+     *     "ResultMessage":""
+     *     }
+     * }
+     */
+    public function processSettledTransactionRefund() {
+        $data_string = json_encode($this->_transactionRefundData);
+        $ch = curl_init('https://xmltestapi.propay.com/ProtectPay/RefundTransaction');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERPWD, $this->_getAuth());
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($data_string)
+        ));
+
+        $this->_transactionRefundInfo = curl_exec($ch);
+        return $this;
+
+    }
+
+    /**
+     * @param array $transactionRefundData
+     * @return $this
+     */
+    public function setTransactionRefundData($transactionRefundData) {
+        $this->_transactionRefundData = $transactionRefundData;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTransactionRefundInfo() {
+        return $this->_transactionRefundInfo;
+    }
 
 
     /**
