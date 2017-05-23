@@ -24,6 +24,10 @@ class ProtectPayApi {
     private $_paymentMethodTransactionData;
     private $_paymentMethodTransactionInfo;
 
+    /* for processing a payment method transaction void */
+    private $_paymentMethodTransactionVoidData;
+    private $_paymentMethodTransactionVoidInfo;
+
 
 
 
@@ -141,6 +145,46 @@ class ProtectPayApi {
     public function getPaymentMethodTransactionInfo() {
         return $this->_paymentMethodTransactionInfo;
     }
+
+    /**
+     * @return $this
+     * success result is something like
+     * {"Transaction":{"AVSCode":"NotPresent","AuthorizationCode":null,"CurrencyConversionRate":1.0,"CurrencyConvertedAmount":0,"CurrencyConvertedCurrencyCode":"Unsupported","ResultCode":{"ResultValue":"SUCCESS","ResultCode":"00","ResultMessage":""},"TransactionHistoryId":"0","TransactionId":"603","TransactionResult":"Success","CVVResponseCode":"NotPresent","GrossAmt":null,"NetAmt":null,"PerTransFee":null,"Rate":null,"GrossAmtLessNetAmt":null},"RequestResult":{"ResultValue":"SUCCESS","ResultCode":"00","ResultMessage":""}}
+     */
+    public function processPaymentMethodTransactionVoid() {
+        $data_string = json_encode($this->_paymentMethodTransactionVoidData);
+
+        $ch = curl_init('https://xmltestapi.propay.com/ProtectPay/VoidedTransactions');
+        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+        curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_USERPWD, $this->_getAuth());
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+            'Content-Type: application/json',
+            'Content-Length: ' . strlen($data_string)
+        ));
+
+        $this->_paymentMethodTransactionVoidInfo = curl_exec($ch);
+        return $this;
+    }
+
+    /**
+     * @param array $paymentMethodTransactionVoidData
+     * @return $this
+     */
+    public function setPaymentMethodTransactionVoidData($paymentMethodTransactionVoidData) {
+        $this->_paymentMethodTransactionVoidData = $paymentMethodTransactionVoidData;
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPaymentMethodTransactionVoidInfo() {
+        return $this->_paymentMethodTransactionVoidInfo;
+    }
+
+
 
     /**
      * @param array $payerIdData

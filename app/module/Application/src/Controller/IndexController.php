@@ -67,7 +67,7 @@ class IndexController extends AbstractActionController
         /**
          * The cert string and setTermId would normally be in a config or in your database
          *  This call normally yields return json data for the account created like so
-         * {"AccountNumber" => 32299999,"Password":"$#GD!ADXv2","SourceEmail" => "someuser@somedomain.com","Status":"00","Tier":"Platinum"}
+         * {"AccountNumber" => 32299999,"Password" => "$#GD!ADXv2","SourceEmail" => "someuser@somedomain.com","Status":"00","Tier":"Platinum"}
          */
 
         /*
@@ -247,6 +247,8 @@ class IndexController extends AbstractActionController
             ->getCreatePayerIdInfo();
         */
 
+        /*
+
         $data = [
             "PaymentMethodId" => "06f97670-48c2-4679-93fc-d61771d410f9",
             "IsRecurringPayment" => false,
@@ -291,6 +293,24 @@ class IndexController extends AbstractActionController
             ->setPaymentMethodTransactionData($data)
             ->processPaymentMethodTransaction('8924157370851397')
             ->getPaymentMethodTransactionInfo();
+
+        */
+
+        $data = [
+            "OriginalTransactionId" => "2",
+            "TransactionHistoryId" => 0,
+            "MerchantProfileId" => null,
+            "Comment1" => "Void Comment 1",
+            "Comment2" => "Void Comment 2"
+        ];
+
+        $protectPayAPI = new ProtectPayApi();
+
+        $result = $protectPayAPI->setBillerId('2781086379225246')
+            ->setAuthToken('16dfe8d7-889b-4380-925f-9c2c6ea4d930')
+            ->setPaymentMethodTransactionVoidData($data)
+            ->processPaymentMethodTransactionVoid()
+            ->getPaymentMethodTransactionVoidInfo();
 
         return new ViewModel(['result' => $result]);
 
