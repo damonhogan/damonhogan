@@ -179,8 +179,8 @@ class IndexController extends AbstractActionController
         ];
 
         $protectPayAPI = new ProtectPayApi();
-        $result = $protectPayAPI->setCertStr('TiAuNrNwEjRnScCaE9RcTcS7ReI9NG')
-            ->setTermId('ReI9NG')
+        $result = $protectPayAPI->setBillerId('2781086379225246')
+            ->setAuthToken('16dfe8d7-889b-4380-925f-9c2c6ea4d930')
             ->setHostedTransactionData($data)
             ->createHostedTransaction()
             ->getCreatedHostedTransactionInfo();
@@ -188,8 +188,8 @@ class IndexController extends AbstractActionController
 
         /*
         $protectPayAPI = new ProtectPayApi();
-        $result = $protectPayAPI->setCertStr('TiAuNrNwEjRnScCaE9RcTcS7ReI9NG')
-            ->setTermId('ReI9NG')
+        $result = $protectPayAPI->setBillerId('2781086379225246')
+            ->setAuthToken('16dfe8d7-889b-4380-925f-9c2c6ea4d930')
             ->setGetHostedTransactionData("3c2d361a-23a7-4ca1-9c4d-4c18e1af7ad1")
             ->getHostedTransaction()
             ->getHostedTransactionInfo();
