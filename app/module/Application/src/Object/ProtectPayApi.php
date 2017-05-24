@@ -35,6 +35,12 @@ class ProtectPayApi {
     /* for temp tokens */
     private $_tempToken;
 
+    /* md5 hash of utf8 encoded temp token */
+    private $_md5HashUtf8TempToken;
+
+    private $_encryptedString;
+    private $_decryptedString;
+
     /**
      * @param string $billerId
      * @return $this
@@ -413,6 +419,51 @@ class ProtectPayApi {
     public function setGetHostedTransactionData($getHostedTransactionData) {
         $this->_getHostedTransactionData = $getHostedTransactionData;
         return $this;
+    }
+
+    /**
+     * @param string $tempToken
+     * @return $this
+     */
+    public function setUtf8EncodeMd5HashTempToken($tempToken) {
+        $this->_tempToken = $tempToken;
+        $this->_md5HashUtf8TempToken = md5(utf8_encode($tempToken));
+        return $this;
+    }
+
+    /**
+     * Encrypts the string using the set $this->_md5HashUtf8TempToken
+     * @param string $stringToEncrypt
+     * @return $this
+     */
+    public function encryptString($stringToEncrypt) {
+        $this->_encryptedString = openssl_encrypt($stringToEncrypt, 'AES-128-CBC', $this->_md5HashUtf8TempToken, OPENSSL_RAW_DATA, $this->_md5HashUtf8TempToken);
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEncryptedString() {
+        return $this->_encryptedString;
+    }
+
+    /**
+     * Decrypts the string using the set $this->_md5HashUtf8TempToken
+     * @param string $stringToDecrypt
+     * @return $this
+     */
+    public function decryptString($stringToDecrypt) {
+        $this->_encryptedString = $stringToDecrypt;
+        $this->_decryptedString = openssl_decrypt($stringToDecrypt, 'AES-128-CBC', $this->_md5HashUtf8TempToken, OPENSSL_RAW_DATA, $this->_md5HashUtf8TempToken);
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDecryptedString() {
+        return $this->_decryptedString;
     }
 
 }
