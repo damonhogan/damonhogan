@@ -19,6 +19,13 @@ class ProPayApi {
     private $_timedPullData;
     private $_timedPullInfo;
 
+    /* for xml */
+
+    /** @var  \SimpleXMLElement */
+    private $_xmlRequestObject;
+    /** @var  \SimpleXMLElement */
+    private $_xmlResponseObject;
+
     /**
      * @param string $certStr
      * @return $this
@@ -164,4 +171,57 @@ class ProPayApi {
     public function getTimedPullInfo() {
         return $this->_timedPullInfo;
     }
+
+    /**
+     * sets the xml request object
+     * @param string $xmlData - containing XML
+     * @return $this
+     */
+    public function setXMLRequestData($xmlData) {
+        $this->_xmlRequestObject = simplexml_load_string($xmlData);
+        return $this;
+    }
+
+    /**
+     * @param string $xmlData - containing XML
+     * @return $this
+     */
+    public function setXMLResponseData($xmlData) {
+        $this->_xmlResponseObject = simplexml_load_string($xmlData);
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getXMLRequestObject() {
+        return $this->_xmlRequestObject;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getXMLResponseObject() {
+        return $this->_xmlResponseObject;
+    }
+
+    /**
+     * @param \SimpleXMLElement $xmlObject
+     * @return $this
+     */
+    public function setXMLRequestObject(\SimpleXMLElement $xmlObject) {
+        $this->_xmlRequestObject = $xmlObject;
+        return $this;
+    }
+
+    /**
+     * @param \SimpleXMLElement $xmlObject
+     * @return $this
+     */
+    public function setXMLResponseObject(\SimpleXMLElement $xmlObject) {
+        $this->_xmlResponseObject = $xmlObject;
+        return $this;
+    }
+
+
 }

@@ -366,24 +366,44 @@ class IndexController extends AbstractActionController
         /**
          * encrypt example
          */
+
+        /*
         $protectPayAPI = new ProtectPayApi();
 
         $encryptedString = $protectPayAPI->setUtf8EncodeMd5HashTempToken("a6ab35d3-905b-4d1e-a967-169c1aa2dd56d337e8bd-d6ae-4f3b-a4b6-0980dcbeb632")
             ->encryptString(utf8_encode('some name value'))
             ->getEncryptedString();
+        */
 
         /**
          * Decrypt example
          */
+
+        /*
         $protectPayAPI = new ProtectPayApi();
 
         $decryptedString = utf8_decode($protectPayAPI->setUtf8EncodeMd5HashTempToken("a6ab35d3-905b-4d1e-a967-169c1aa2dd56d337e8bd-d6ae-4f3b-a4b6-0980dcbeb632")
             ->decryptString($encryptedString)
             ->getDecryptedString()
         );
+        */
+
+        $proPayAPI = new ProPayApi();
+        $data = "<?xml version='1.0' encoding='UTF-8'?>
+        <document> 
+        </document>";
 
 
-        return new ViewModel(['result' => $decryptedString]);
+        $simpleXML = new \SimpleXMLElement($data);
+        $simpleXML->addChild('users');
+        $simpleXML->users->addChild('username', 'damon');
+
+        $result =
+            $proPayAPI->setXMLRequestData($simpleXML->asXML())
+            ->getXMLRequestObject()->asXML();
+
+
+        return new ViewModel(['result' => $result]);
 
 
 
