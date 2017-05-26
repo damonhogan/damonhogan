@@ -389,14 +389,15 @@ class IndexController extends AbstractActionController
         */
 
         $proPayAPI = new ProPayApi();
-        $data = "<?xml version='1.0' encoding='UTF-8'?>
-        <document> 
-        </document>";
-
-
+        $data = "<?xml version='1.0'?>
+            <!DOCTYPE Request.dtd>
+            <XMLRequest>
+            </XMLRequest>";
         $simpleXML = new \SimpleXMLElement($data);
-        $simpleXML->addChild('users');
-        $simpleXML->users->addChild('username', 'damon');
+        $simpleXML->addChild('certStr','TiAuNrNwEjRnScCaE9RcTcS7ReI9NG');
+        $simpleXML->addChild('class','partner');
+        $simpleXML->addChild('XMLTrans');
+
 
         $result =
             $proPayAPI->setXMLRequestData($simpleXML->asXML())

@@ -25,6 +25,8 @@ class ProPayApi {
     private $_xmlRequestObject;
     /** @var  \SimpleXMLElement */
     private $_xmlResponseObject;
+    /** @var  string */
+    private $_xmlUrl;
 
     /**
      * @param string $certStr
@@ -222,6 +224,43 @@ class ProPayApi {
         $this->_xmlResponseObject = $xmlObject;
         return $this;
     }
+
+    /**
+     * sets the url for the XML request
+     * @param string $xmlUrl
+     * @return $this
+     */
+    public function setXMLUrl($xmlUrl) {
+        $this->_xmlUrl = $xmlUrl;
+        return $this;
+    }
+
+
+    // PHP server code to receive the xml post below might be
+    /**
+     * $xml = file_get_contents('php://input');
+     *
+     * $xml = new SimpleXMLElement($xml, LIBXML_NOCDATA, false);
+     */
+
+    /**
+     * posts XML to the server
+     * @return $this
+     */
+    public function postXML() {
+        $curl = curl_init();
+        curl_setopt_array($curl, [
+            CURLOPT_URL            => $this->_xmlUrl,
+            CURLOPT_POST           => true,
+            CURLOPT_POSTFIELDS     => $this->_xmlRequestObject->asXML(),
+            CURLOPT_RETURNTRANSFER => true
+
+        ]);
+        $this->_xmlResponseObject = simplexml_load_string(curl_exec($curl));
+        curl_close($curl);
+        return $this;
+    }
+
 
 
 }
