@@ -388,7 +388,7 @@ class IndexController extends AbstractActionController
         );
         */
 
-        $proPayAPI = new ProPayApi();
+        /*$proPayAPI = new ProPayApi();
         $data = "<?xml version='1.0'?>
             <!DOCTYPE Request.dtd>
             <XMLRequest>
@@ -409,7 +409,7 @@ class IndexController extends AbstractActionController
             ->postXML()
             ->getXMLRequestObject()->asXML();
 
-        $result = $proPayAPI->getXMLResponseObject();
+        $result = $proPayAPI->getXMLResponseObject(); */
 
         return new ViewModel(['result' => $result]);
 

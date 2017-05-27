@@ -4,6 +4,9 @@ namespace Application\Object;
 
 class ProPayApi {
 
+    /* change this to the production url for going live after testing https://api.propay.com */
+    private $_apiBaseUrl = 'https://xmltestapi.propay.com';
+
     private $_certStr;
     private $_termId;
 
@@ -87,7 +90,7 @@ class ProPayApi {
     public function processSignup() {
         $data_string = json_encode($this->_signupData);
 
-        $ch = curl_init('https://xmltestapi.propay.com/ProPayAPI/signup');
+        $ch = curl_init($this->_apiBaseUrl . '/ProPayAPI/signup');
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -107,7 +110,7 @@ class ProPayApi {
     public function processProPayToProPay() {
         $data_string = json_encode($this->_propayToPropayTransferData);
 
-        $ch = curl_init('https://xmltestapi.propay.com/ProPayAPI/ProPayToProPay');
+        $ch = curl_init($this->_apiBaseUrl . '/ProPayAPI/ProPayToProPay');
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -128,7 +131,7 @@ class ProPayApi {
     public function processTimedPull() {
         $data_string = json_encode($this->_timedPullData);
 
-        $ch = curl_init('https://xmltestapi.propay.com/ProPayAPI/timedPull');
+        $ch = curl_init($this->_apiBaseUrl . '/ProPayAPI/timedPull');
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);

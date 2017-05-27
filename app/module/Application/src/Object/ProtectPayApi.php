@@ -4,6 +4,9 @@ namespace Application\Object;
 
 class ProtectPayApi {
 
+    /* change this to the production url for going live after testing https://api.propay.com */
+    private $_apiBaseUrl = 'https://xmltestapi.propay.com';
+
     /* credentials that would normally be set from database values or a config value */
     private $_billerId;
     private $_authToken;
@@ -84,7 +87,7 @@ class ProtectPayApi {
     public function createHostedTransaction() {
         $data_string = json_encode($this->_createHostedTransactionData);
 
-        $ch = curl_init('https://xmltestapi.propay.com/protectpay/hostedtransactions');
+        $ch = curl_init($this->_apiBaseUrl . '/protectpay/hostedtransactions');
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -105,7 +108,7 @@ class ProtectPayApi {
     public function createPayerId() {
         $data_string = json_encode($this->_createPayerIdData);
 
-        $ch = curl_init('https://xmltestapi.propay.com/ProtectPay/Payers');
+        $ch = curl_init($this->_apiBaseUrl . '/ProtectPay/Payers');
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -125,7 +128,7 @@ class ProtectPayApi {
     public function processPaymentMethodTransaction($payerExternalAccountId) {
         $data_string = json_encode($this->_paymentMethodTransactionData);
 
-        $ch = curl_init('https://xmltestapi.propay.com/protectpay/Payers/' . $payerExternalAccountId . '/PaymentMethods/AuthorizedTransactions');
+        $ch = curl_init($this->_apiBaseUrl . '/protectpay/Payers/' . $payerExternalAccountId . '/PaymentMethods/AuthorizedTransactions');
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -164,7 +167,7 @@ class ProtectPayApi {
     public function processPaymentMethodTransactionVoid() {
         $data_string = json_encode($this->_paymentMethodTransactionVoidData);
 
-        $ch = curl_init('https://xmltestapi.propay.com/ProtectPay/VoidedTransactions');
+        $ch = curl_init($this->_apiBaseUrl . '/ProtectPay/VoidedTransactions');
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -228,7 +231,7 @@ class ProtectPayApi {
      */
     public function processSettledTransactionRefund() {
         $data_string = json_encode($this->_transactionRefundData);
-        $ch = curl_init('https://xmltestapi.propay.com/ProtectPay/RefundTransaction');
+        $ch = curl_init($this->_apiBaseUrl . '/ProtectPay/RefundTransaction');
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -268,7 +271,7 @@ class ProtectPayApi {
      * {"TempToken":"e20fe709-26e3-43fb-ad9b-07dc85e8f4acdd256f4c-ebbf-4b39-8174-c4cf7e11f9dd","PayerId":"8924157370851397","RequestResult":{"ResultValue":"SUCCESS","ResultCode":"00","ResultMessage":""},"CredentialId":4086261}
      */
     public function getPayerIdTempToken($payerId, $durationInSeconds) {
-        $ch = curl_init('https://xmltestapi.propay.com/ProtectPay/Payers/' .
+        $ch = curl_init($this->_apiBaseUrl . '/ProtectPay/Payers/' .
             $payerId . '/TempTokens/?durationSeconds=' . $durationInSeconds);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -287,7 +290,7 @@ class ProtectPayApi {
      * {"TempToken":"a6ab35d3-905b-4d1e-a967-169c1aa2dd56d337e8bd-d6ae-4f3b-a4b6-0980dcbeb632","PayerId":"3515879384408403","RequestResult":{"ResultValue":"SUCCESS","ResultCode":"00","ResultMessage":""},"CredentialId":4086263}
      */
     public function getPayerNameTempToken($payerName, $durationInSeconds) {
-        $ch = curl_init('https://xmltestapi.propay.com/protectpay/TempTokens/?payerName=' .
+        $ch = curl_init($this->_apiBaseUrl . '/protectpay/TempTokens/?payerName=' .
             urlencode($payerName). '&durationSeconds=' . $durationInSeconds);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -379,7 +382,7 @@ class ProtectPayApi {
        }
      */
     public function getHostedTransaction() {
-        $ch = curl_init('https://xmltestapi.propay.com/protectpay/HostedTransactionResults/' . $this->_getHostedTransactionData);
+        $ch = curl_init($this->_apiBaseUrl . '/protectpay/HostedTransactionResults/' . $this->_getHostedTransactionData);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "GET");
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_USERPWD, $this->_getAuth());
