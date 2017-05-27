@@ -248,13 +248,23 @@ class ProPayApi {
      * @return $this
      */
     public function postXML() {
+        $header = [
+            "Content-type:text/xml; charset=\"utf-8\"",
+            "Accept: text/xml"
+        ];
+
+
         $curl = curl_init();
         curl_setopt_array($curl, [
             CURLOPT_URL            => $this->_xmlUrl,
+            CURLOPT_TIMEOUT        => 30,
             CURLOPT_POST           => true,
             CURLOPT_POSTFIELDS     => $this->_xmlRequestObject->asXML(),
-            CURLOPT_RETURNTRANSFER => true
-
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER     => $header,
+            CURLOPT_SSL_VERIFYPEER => 0,
+            CURLOPT_SSL_VERIFYHOST => 0,
+            CURLOPT_HTTPAUTH => CURLAUTH_ANY
         ]);
         $this->_xmlResponseObject = simplexml_load_string(curl_exec($curl));
         curl_close($curl);

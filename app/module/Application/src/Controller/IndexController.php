@@ -397,12 +397,19 @@ class IndexController extends AbstractActionController
         $simpleXML->addChild('certStr','TiAuNrNwEjRnScCaE9RcTcS7ReI9NG');
         $simpleXML->addChild('class','partner');
         $simpleXML->addChild('XMLTrans');
+        $simpleXML->XMLTrans->addChild('transType', 13);
+        $simpleXML->XMLTrans->addChild('accountNum', 32291150);
+        $simpleXML->XMLTrans->addChild('externalId', 3212157);
+        $simpleXML->XMLTrans->addChild('sourceEmail', 'damonhogan2@icloud.com');
 
 
         $result =
-            $proPayAPI->setXMLRequestData($simpleXML->asXML())
+            $proPayAPI->setXMLUrl('https://xmltest.propay.com/API/PropayAPI.aspx')
+            ->setXMLRequestData($simpleXML->asXML())
+            ->postXML()
             ->getXMLRequestObject()->asXML();
 
+        $result = $proPayAPI->getXMLResponseObject();
 
         return new ViewModel(['result' => $result]);
 
